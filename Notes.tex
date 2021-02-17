@@ -155,7 +155,7 @@ int recv(int socket, char *buffer, int buf len, int flags)
   \begin{center}
     \includegraphics[scale=0.5]{DistanceVector}
   \end{center}
-  Routers exchange information (destination, cost) with immediate neighbors and the table is built from a sequence of exchanges. \\ \\
+  Each routing tables contains entries (destination, cost, next hop). Routers exchange information (destination, cost) with immediate neighbors and the table is built from a sequence of exchanges. \textbf{Note}: nodes propagate a global view to its neighbors.\\ \\
   End result is that each node has the same routing table so routing information is consistent (\textbf{convergent}). Note that no one node contains all information in this table, each node only knows about the content of its own routing table. There are 2 ways in which updates occur:
   \begin{itemize}
     \item \textbf{Periodic update}: each node automatically sends an update message, even if nothing has changed, to let other nodes know that it is still running and to allow other nodes check if the current route becomes unviable.
@@ -165,6 +165,7 @@ int recv(int socket, char *buffer, int buf len, int flags)
   \begin{itemize}
     \item Set a maximum (e.g. 16) to represent infinity. Once we reach that many hops, we claim that the distance is infinity. This solution is restrictive in that it isn't scalable.
     \item \textbf{Split horizon}: when a node sends updates, it does not send routes it learned from a specific neighbor to that same neighbor. However, this solution isn't scalable for loops involving more than 2 nodes.
+    \item \textbf{Poisoned reverse}: report failed links as $\infty$ which helps with routing loops involving 2 nodes. Doesn't work well loops involving $\geq 2$ nodes.
   \end{itemize}
   \textbf{Routing Informatoin Protocol (RIP)}: canonical example of routing protocol built on distance vector algorithm
   \subsubsection{Distance Vector Notations}
@@ -186,10 +187,24 @@ int recv(int socket, char *buffer, int buf len, int flags)
   \end{itemize}
   At the end, routing table consists of values:
   \begin{itemize}
-    \item $\underbrace{x.D(z \rightarrow y)}_{z \in x.N} = x.C(z) + \underbrace{\min(z.D(v \rightarrow y))}_{v \in z.N}$
+  \item $\underbrace{x.D(z \rightarrow y)}_{z \in x.N} = x.C(z) + \underbrace{\min}_{v \in z.N}(z.D(v \rightarrow y))$
+  \end{itemize}
+  \subsubsection{Distance Vector Protocol}
+  $x$ sends an update message, $M = \forall d \in \mathbb{N}, (d, \underbrace{\min}_{v \in x.N}(x.D(v \rightarrow d)))$, to all $v \in x.N$ \\ \\
+  When $x$ receives update from neighbor $v$:
+  \begin{itemize}
+    \item Did $x.C(v)$ change? If yes, $\forall y \in \mathbb{N}, x.D(v \rightarrow y) = \underbrace{x.D(v \rightarrow y) + \delta}_{\text{old val + change}}$
+      \begin{itemize}
+        \item Did the lowest cost to $y$ change? If yes, update the routing table.
+      \end{itemize}
+    \item Did $\underbrace{\min}_{z \in v.N}(v.D(z \rightarrow y))$ (best distance from $v \rightarrow y$) change?\\ 
+      If yes, update $x.D(v \rightarrow y) = \underbrace{x.C(v) + \delta}_{\text{link cost + new change}}$
+      \begin{itemize}
+        \item Did the lowest cost to $y$ change? If yes, update the routing table.
+      \end{itemize}
   \end{itemize}
   \subsubsection{Link State}
-  Since each node knows how to reach its neighbors, we can make it so that this information is known to each node to create a complete map of the network at each node. Relies on
+  Since each node knows how to reach its neighbors, we can make it so that this information is known to each node to create a complete map of the network at each node. \textbf{Note}: nodes propagate local views to all nodes so each has enough information to compute routes locally and can detect routing loops from failures. Relies on
   \begin{itemize}
     \item \textbf{Reliable flooding}: making sure that all nodes get the same copy of the link-state information from all the other nodes. Nodes send their link-state information (\textbf{link-state packet (LSP)}) to all of their neighbors who then forward to their neighbors until all nodes have been reached. LSPs contain
       \begin{itemize}
@@ -199,13 +214,14 @@ int recv(int socket, char *buffer, int buf len, int flags)
         \item time to live for this packet
       \end{itemize}
       First 2 items enable route calculation. Last 2 items make flooding more reliable (ensuring that each node has the most recent copy of the information since there might be multiple LSPs from different nodes traversing the network) \\ \\
-      How flooding works: consider a node X that received a copy of an LSP that originated from node Y. If X already has a stored copy an LSP from Y. If not, X stores the LSP. Otherwise X compares the new and old LSP sequence numbers. If the new LSP has a larger sequence (more recent) then it replaces the old LSP and X sends a copy of this LSP to all of its neighbors, except the neighbor the that sent the new LSP, who do the same check. \\ \\
+      Nodes receive \textbf{ACK} (acknowledgement) packets when they send an LSP. The LSP is retransmitted if no ACK is received. \\ \\
+      \textbf{How flooding works:} consider a node X that received a copy of an LSP that originated from node Y. If X already has a stored copy an LSP from Y. If not, X stores the LSP. Otherwise X compares the new and old LSP sequence numbers. If the new LSP has a larger sequence (more recent), then it replaces the old LSP and X sends a copy of this LSP to all of its neighbors, except the neighbor the that sent the new LSP, who do the same check. \\ \\
       LSPs are generated either on a \textbf{periodic} basis or \textbf{topology change} (a failed link is detected), similar to that of Distance Vectors. \\ \\
       Optimizations for LSPs:
       \begin{itemize}
         \item set long periodic timers for updates (reduces overhead for creating LSPs unless absolutely necessary)
         \item Each time a node generates a new LSP, it increments the sequence by 1. If the node crashes, it starts at 0 when it comes back up. This ensures that newer information replaces older information
-        \item LSPs carry a time to live (ensures that old information is eventually removed). A node always decrements the time to live of a newly received LSP before flooding its neighbors.
+        \item LSPs carry a time to live (ensures that old information is eventually removed). A node always decrements the time to live of a newly received LSP before flooding its neighbors. TTL is also decremented while a node holds the LSP. This ensure that when a node comes back online, there will be a point where we can use it's LSP (all other LSPs with the same ID will have died at some point).
       \end{itemize}
     \item \textbf{Route Calculation}: once a node has a copy of the LSP from every other node, it can compute a graph of the entire network and can determine the best route, using Dijkstra's.
   \end{itemize}
@@ -219,5 +235,54 @@ int recv(int socket, char *buffer, int buf len, int flags)
     \item Consider both bandwidth and latency. Each packet is given a timestamp ArrivalTime and DepartTime and Delay is calculated as (DepartTime - ArrivalTime) + TransmissionTime + Latency, at the other node. Not a good measurement since links will become idle when they have a high load.
     \item Compress dynamic range of metric to smooth the variation of the metric over time. Smoothing was achieved by limiting how much the metric could change from 1 measurement cycle to the next and by calculating the average amount of utilization for a link.
   \end{itemize}
+  \section{Network Layer}
+  \subsection{Internet Protocol}
+  \subsubsection{Vocabulary}
+  \textbf{Internetwork}: arbitrary collection of networks interconnected to prove a host-to-host packet delivery service \\ 
+  \textbf{Router}: node that interconnects networks\\
+  \textbf{Service Model}: host-to-host service one wants to provide \\
+  \textbf{Datagram}: packet sent in a connectionless manner over a network
+  \textbf{Maximum Transmission Unit (MTU)}: largest IP datagram it can carry in a frame (usually has to be smaller than max packet size so that it fits in the payload of the link-layer frame)
+  \subsubsection{Service Model}
+  In order to provide host-to-host service, the underlying physical networks must be able to support it. Service model can be split into 2 parts
+  \begin{itemize}
+    \item \textbf{Addressing scheme}: provides a way to identify all hosts in the internetwork
+    \item \textbf{Datagram (connectionless) model}: makes \textbf{best effort} to deliver datagrams (ie does not guarantees datagrams are sent successfully). This is sometimes called \textbf{unreliable} service.
+  \end{itemize}
+  \subsubsection{Packet Format}
+  Similar to regular packet where it consists of \textbf{headers} and a data \textbf{payload}. The headers is split into 32-bit boundaries, for higher network layers to use.
+  \begin{center}
+    \includegraphics[scale=0.4]{IPv4PacketHeader}
+  \end{center}
+  Looking at the various IP header fields:
+  \begin{itemize}
+    \item \textbf{Version}: specifies which version of IP is being used. 
+    \item \textbf{Hlen}: specifies the length of the header in 32-bit words.
+    \item \textbf{TOS}: type of service. Allows packets to be treated differently based on application needs.
+    \item \textbf{Length}: size of entire packet (including header) as bytes.
+    \item Note that the second word is used for fragmentation and reassembly (explained below)
+    \item \textbf{TTL}: time to live (used to discard packets that have been stuck in the routing loop)
+    \item \textbf{Protocol}: demultiplexing key used to identify which higher protocol to send to (UDP, TCP)
+    \item \textbf{Checksum}: used to check for bit corruption in the header
+    \item \textbf{SourceAddr}: which address packet came from (allows recipients decide if they want to accept)
+    \item \textbf{DestinationAddr}: which address packet is sent to
+    \item \textbf{Options}: additional options may be added (can be determined using \textbf{HLen})
+  \end{itemize}
+  \subsubsection{Fragmentation and Reassembly}
+  Biggest issue is that each network technology has its own idea of how large a packet is. Thus, packets must be fragmented and reassembled when they don't fit in the network technology. \\ \\
+  Fragmentation occurs when a router receives a datagram that it wants to forward over the network with a lower MTU. The receiving host will recognize which fragments belong together through its \textbf{Ident} header field. If all fragments don't arrive, the host discards the packet entirely and does not attempt recover missing fragments. \\ \\
+  The \textbf{Flag} header field is used to indicate that there are more packets coming. The \textbf{Offset} header field is used to identify which partition of the packet is being sent over.
+  \subsection{Global Addresses}
+  IP addresses are \textbf{hierarchical}, consisting of a \textbf{network} part (identifies the network thae host is attached to) and a \textbf{host} part (unique host on the network). Addresses are written as 4 octets, or \textbf{dotted quad} notation and can be broken down into 5 classes subnets, in the classical model:
+  \begin{itemize}
+    \item A: $0-127.y.x.w$ $\quad 0, \underbrace{7b}_{\text{network}}, \underbrace{24b}_{\text{host}}$
+    \item B: $128 - 191.y.x.w$ $\quad 10, \underbrace{14b}_{\text{network}}, \underbrace{16b}_{\text{host}}$
+    \item C: $192-223.y.x.w$ $\quad 110, \underbrace{21b}_{\text{network}}, \underbrace{8b}_{\text{host}}$
+    \item D: $224-239.y.x.w$
+    \item D: $240-255.y.x.w$
+  \end{itemize}
+  Classical representation runs out of space rapdily so we can instead break larger subnets into smaller subnets using a \textbf{network mask} (e.g. $255.255.0.0$). Then:
+  \[\text{mask } \& \text{ address} = 128.8.0.0 \text{ base address }\]
+  \subsection{Datagram Forwarding in IP}
 
 \end{document}

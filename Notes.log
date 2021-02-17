@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.8)  26 JAN 2021 22:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.8)  16 FEB 2021 18:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -402,89 +402,125 @@ Underfull \hbox (badness 10000) in paragraph at lines 78--81
 
  []
 
-<./assets/Encapsulation.png, id=86, 723.70375pt x 624.3325pt>
+<./assets/Encapsulation.png, id=126, 723.70375pt x 624.3325pt>
 File: ./assets/Encapsulation.png Graphic file (type png)
 <use ./assets/Encapsulation.png>
 Package pdftex.def Info: ./assets/Encapsulation.png  used on input line 82.
 (pdftex.def)             Requested size: 217.1128pt x 187.3012pt.
-<./assets/OSI.png, id=88, 969.6225pt x 708.6475pt>
+<./assets/OSI.png, id=128, 969.6225pt x 708.6475pt>
 File: ./assets/OSI.png Graphic file (type png)
 <use ./assets/OSI.png>
 Package pdftex.def Info: ./assets/OSI.png  used on input line 95.
 (pdftex.def)             Requested size: 242.40503pt x 177.16144pt.
 [3 <./assets/Encapsulation.png>]
-<./assets/InternetArchitecture.png, id=94, 277.035pt x 203.76125pt>
+<./assets/InternetArchitecture.png, id=134, 277.035pt x 203.76125pt>
 File: ./assets/InternetArchitecture.png Graphic file (type png)
 <use ./assets/InternetArchitecture.png>
 Package pdftex.def Info: ./assets/InternetArchitecture.png  used on input line 106.
 (pdftex.def)             Requested size: 138.51715pt x 101.88037pt.
  [4 <./assets/OSI.png> <./assets/InternetArchitecture.png>] [5]
-<./assets/DistanceVector.png, id=125, 407.5225pt x 608.2725pt>
+<./assets/DistanceVector.png, id=166, 407.5225pt x 258.46562pt>
 File: ./assets/DistanceVector.png Graphic file (type png)
 <use ./assets/DistanceVector.png>
 Package pdftex.def Info: ./assets/DistanceVector.png  used on input line 156.
-(pdftex.def)             Requested size: 203.76074pt x 304.13551pt.
+(pdftex.def)             Requested size: 203.76074pt x 129.23248pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 158--160
 
  []
 
-[6 <./assets/DistanceVector.png>]
-./Notes.tex:178: Missing $ inserted.
+./Notes.tex:179: Missing $ inserted.
 <inserted text> 
                 $
-l.178     \item if $y \in x.N$ \implies
+l.179     \item if $y \in x.N$ \implies
                                         $x.D(y \rightarrow y) = x.C(y)$
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
-./Notes.tex:178: Missing $ inserted.
+./Notes.tex:179: Missing $ inserted.
 <inserted text> 
                 $
-l.178 ...f $y \in x.N$ \implies $x.D(y \rightarrow
+l.179 ...f $y \in x.N$ \implies $x.D(y \rightarrow
                                                    y) = x.C(y)$
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--205
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 201--205
+[6 <./assets/DistanceVector.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 193--195
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 201--205
+Underfull \hbox (badness 10000) in paragraph at lines 216--221
 
  []
 
-[7]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 223.
- [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 223.
+
+Overfull \hbox (16.32698pt too wide) in paragraph at lines 216--221
+\OT1/cmr/m/n/10 Nodes re-ceive \OT1/cmr/bx/n/10 ACK \OT1/cmr/m/n/10 (ac-knowl-edge-ment) pack-ets when they send an LSP. The LSP is re-trans-mit-ted
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 216--221
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 216--221
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 216--221
+
+ []
+
+[7] [8]
+<./assets/IPv4PacketHeader.png, id=186, 507.8975pt x 418.56375pt>
+File: ./assets/IPv4PacketHeader.png Graphic file (type png)
+<use ./assets/IPv4PacketHeader.png>
+Package pdftex.def Info: ./assets/IPv4PacketHeader.png  used on input line 255.
+(pdftex.def)             Requested size: 203.1554pt x 167.42252pt.
+ [9 <./assets/IPv4PacketHeader.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 272--275
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 272--275
+
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 288.
+[10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 288.
  (./Notes.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 223.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 223.
-Package rerunfilecheck Info: File `Notes.out' has not changed.
-(rerunfilecheck)             Checksum: BE37095B7E73F93D907CDC199BC6D6DF;885.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 223.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 288.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 288.
+
+
+Package rerunfilecheck Warning: File `Notes.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Notes.out':
+(rerunfilecheck)             Before: 8A2050E17ADFBEB3788A137C96A12832;1455
+(rerunfilecheck)             After:  86A58312A3D38357BE0F56FE48AA381D;1530.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 288.
  ) 
 Here is how much of TeX's memory you used:
- 8220 strings out of 492616
- 116620 string characters out of 6129482
+ 8244 strings out of 492616
+ 117082 string characters out of 6129482
  434313 words of memory out of 5000000
- 12003 multiletter control sequences out of 15000+600000
+ 12015 multiletter control sequences out of 15000+600000
  11969 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  28i,9n,49p,487b,1905s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Notes.pdf (8 pages, 417484 bytes).
+</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Notes.pdf (10 pages, 523524 bytes).
 PDF statistics:
- 196 PDF objects out of 1000 (max. 8388607)
- 164 compressed objects within 2 object streams
- 42 named destinations out of 1000 (max. 500000)
- 125 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 254 PDF objects out of 1000 (max. 8388607)
+ 216 compressed objects within 3 object streams
+ 53 named destinations out of 1000 (max. 500000)
+ 194 words of extra memory for PDF output out of 10000 (max. 10000000)
 
