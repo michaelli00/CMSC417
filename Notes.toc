@@ -20,3 +20,6 @@
 \contentsline {subsubsection}{\numberline {3.1.4}Fragmentation and Reassembly}{10}{subsubsection.3.1.4}% 
 \contentsline {subsection}{\numberline {3.2}Global Addresses}{10}{subsection.3.2}% 
 \contentsline {subsection}{\numberline {3.3}Datagram Forwarding in IP}{10}{subsection.3.3}% 
+\contentsline {subsection}{\numberline {3.4}Subnetting and Classless Addressing}{11}{subsection.3.4}% 
+\contentsline {subsubsection}{\numberline {3.4.1}Subnetting}{11}{subsubsection.3.4.1}% 
+\contentsline {subsubsection}{\numberline {3.4.2}Classless Addressing (CIDR)}{11}{subsubsection.3.4.2}% 

@@ -20,3 +20,6 @@
 \BOOKMARK [3][-]{subsubsection.3.1.4}{Fragmentation and Reassembly}{subsection.3.1}% 20
 \BOOKMARK [2][-]{subsection.3.2}{Global Addresses}{section.3}% 21
 \BOOKMARK [2][-]{subsection.3.3}{Datagram Forwarding in IP}{section.3}% 22
+\BOOKMARK [2][-]{subsection.3.4}{Subnetting and Classless Addressing}{section.3}% 23
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Subnetting}{subsection.3.4}% 24
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Classless Addressing \(CIDR\)}{subsection.3.4}% 25

@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1613519929 "Notes.tex" "Notes.pdf" "Notes" 1613519929
+["pdflatex"] 1613531685 "Notes.tex" "Notes.pdf" "Notes" 1613531685
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -86,18 +86,18 @@
   "/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1557342064 3277517 23507ed665b4dd9046f0f2a94bbef2be ""
   "/usr/local/texlive/2019/texmf-var/web2c/pdftex/pdflatex.fmt" 1557342086 4259635 562fc36ec496993777a6c428d8bfb811 ""
   "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
-  "Notes.aux" 1613519563 3337 535f596e7a41d073bc89fe773c8e4b58 "pdflatex"
-  "Notes.out" 1613519563 1455 8a2050e17adfbeb3788a137c96a12832 "pdflatex"
-  "Notes.tex" 1613519929 23619 21dc845494c7fab391eecbab204d1508 ""
-  "Notes.toc" 1613519563 1835 61ff082f1a72e1f8275584362d0f7bef "pdflatex"
+  "Notes.aux" 1613531659 3886 0ec73881a78f83481a1aa42a4b6bebed "pdflatex"
+  "Notes.out" 1613531659 1774 9126b23c747f028ecc0711c12278a44e "pdflatex"
+  "Notes.tex" 1613531684 25075 75ec30fd6ddae0b3a5b8e65af371da0c ""
+  "Notes.toc" 1613531659 2224 186537ccc88a7adbe2d33050a7e2a706 "pdflatex"
   "assets/DistanceVector.png" 1612050086 89972 fc7b1609322e150f8b6abac8962447e5 ""
   "assets/Encapsulation.png" 1611716134 124228 cc71132eb240d94686366a291a6493c1 ""
   "assets/IPv4PacketHeader.png" 1613309205 175370 4ce55f32d3bfcd235809ba0fe3331dc6 ""
   "assets/InternetArchitecture.png" 1611716134 33517 e84cd58a6f3e33ffa78b53ee103f8708 ""
   "assets/OSI.png" 1611716134 198125 208b85e00077205c89363815b1513dfc ""
   (generated)
-  "Notes.toc"
-  "Notes.pdf"
   "Notes.aux"
+  "Notes.toc"
   "Notes.log"
+  "Notes.pdf"
   "Notes.out"
