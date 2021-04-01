@@ -174,20 +174,79 @@ Connection Establishment and Termination:
 ![](./assets/TCPState.png =500x500)
 
 </center>
->>>>>>> 36fa6bd2ad8f93e564cb7728e6e3a426836c9c8b
 
 TCP Sliding Window:
 * Similar to link level sliding window except that the receiver **advertises** a variable size window (`AdvertisedWindow` header field) to help with flow control. TCP Sliding Window also guarantees:
   * Reliable and Ordered Delivery: buffers on both the sending and receiving side are used to buffer unacknowledged segments and reorder out of order data. To do so, we maintain
     * `LastByteAcked <= LastByteSent`
     * `LastByteSent <= LastByteWritten`
-    * `LastByteRead < NeextByteExpected`
-    * `NextByteEExpected <= LastByteRcvd + 1`
+    * `LastByteRead < NextByteExpected`
+    * `NextByteExpected <= LastByteRcvd + 1`
   * Flow Control: use `MaxSendBuffer` and `MaxRcvBuffer` to throttle data
     * `LastByteRcvd - LastByteRead <= MaxRcvBuffer`
-    * `AdvertisedWindow = MaxRcvBuffer - ((NeextByteExpected - 1) - LastByteRead)`
+    * `AdvertisedWindow = MaxRcvBuffer - ((NextByteExpected - 1) - LastByteRead)`
     * `LastByteSent - LastByteAcked <= AdvertisedWindow`
     * `EffectiveWindow = AdvertisedWindow - (LastByteSent - LastByteAcked)` (`EffectiveWindow` limits how much data it can send)
     * `LastByteWritten - LastByteAcked <= MaxSendBuffer`
     * If `y` bytes are written, `(LastByteWritten - LastByteAcked) + y > MaxSendBuffer` then TCP blocks the sending process
+    * If `EffectiveWindow > 0`, can send data. Otherwise need to wait for an ACK to free up space
     * **Note**: the sender usually sends a 1-byte message called **Zero Window Probes** to notify the sender when `AdvertisedWindow` is non-zero
+  * Issue 1: Fast sender, slow receiver (`LBR` increases slowly, `NBE` increases quickly):`(NBE - 1) - LBR` increases quickly so `AdvertisedWindow` and `EffectiveWindow` decreases to `0`, so the sender **blocks**.
+    * `ACK` is sent when receiving any data segment. `ACK` will include (`NBE, AdvertisedWindow`). However, if `AdvertisedWindow == 0`, the sender sends no data and receiver returns no `ACKs`, so the sender can't learn when `AdvertisedWindow` increases.
+      * Solution: if `AdvWin == 0`, periodically send a 1B segment to trigger an `ACK` response to trigger sender to expand `AdvWin` and start sending data again.
+  * Issue 2: Finite Sequence Numbers:
+    * 32b sequence number and 16b `AdvWin` so there are a lot more sequence numbers (good for sliding window)
+    * Segments survive at most MSL (120s) so wrap-around within MSL can cause conflicts
+  * Issue 3: Small Advertised Windows:
+    * `delay * bw = throughput` which is the **largest useful AdvWin**
+
+TCP Congestion Control: what happens when we send `AdvWin` when there is **network congestion**
+* Get congestive packet loss, leading to retransmissions. However this just causes more congestion, leading to **congestion collapse**.
+* Hosts try to estimate capacity and ACKs trigger new data segments using Nagle's Algorithm. However, the available bandwidth changes as other connections (flows) come and go
+
+AIMD: Additive Increase, Multiplicative Decrease:
+* **Congestion Window** (`cwnd`): source-based limit of data-in-flight. This value is based on observations. If there's congestion, then `cwnd` decreases. Otherwise increases.
+* `AdvWin = awnd`
+* Max unAck'd data: `maxWin = min(cwnd, awnd)`
+* `EffWin = maxWin - (LBS - LBA)`
+* If timeout for an ACK occurs, we assume it's a congestion-based drop and `cwnd = max(cwnd/2, MSS)`
+* When ACK is received, there aren't any congestions and `cwnd = cwnd + MSS*MSS/cwnd`
+
+Slow-start: idea is to ramp up quickly until AIMD is near-optimal
+* Start: `cwnd = MSS`
+* When recv ACK: `cwnd = cwnd + MSS`
+* When packet loss: switch to AIMD
+* New connections begin in SS
+* If a connection goes dead, then we enter SS until `cwnd` reaches SSthreshold
+
+Fast retransmit: 
+* TCP uses duplicate ACKs. If we see the same duplicate 3 times, then retransmit the next segment after the ACK, even without a timeout.
+
+Fast Recovery:
+* Uses continued ACKs to clock new sends. So when a fast retransmission occurs, `cwnd = cwnd/2`. Leads to **congestion avoidance** and avoids going back to SS.
+
+TCP Tahoe: after 3 dup ACKs
+* do a fast-retransmit
+* set `SSThresh = cwnd/2`
+* `cwnd = MSS`
+* Enter SS
+
+TCP Reno: after 3 dup ACKs
+* do a fast-retransmit
+* `SSTresh = cwnd/2`
+* `cwnd = cwnd/2`
+* Start fast recovery
+
+TCP Vegas: RTT-base congestion avoidance
+* `ExpectedRate = cwnd/minRTT`
+* `D = ExpectedRate-ActualRate`
+* If `D < a` then increase `cwnd` linearly
+* If `D > b` then decrease `cwnd` linearly
+
+TCP New Reno: higher-throughput version of Reno's fast recovery
+* Dup ACKs causes new segment to be sent
+* If the ACK makes progress, we assume it points to a hole from loss
+
+TCP CUBIC: function-based congestion control
+* If packet loss is found, `cwnd = b*cwnd` where `b < 1`
+* Otherwise `cwnd` grows as a cubic function of time since the last back-off
